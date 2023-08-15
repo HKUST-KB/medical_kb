@@ -1,0 +1,70 @@
+LOAD CSV WITH HEADERS  FROM "file:///xin_Drugs.csv" AS line  
+CREATE (p:drugs{id:line.id,title:line.title,url:line.url,Interactions:line.Interactions,SideEffects:line.SideEffects,Warnings:line.Warnings,Overdose:line.Overdose,DrugStatus:line.DrugStatus,MedicalUse:line.MedicalUse})  
+
+CREATE CONSTRAINT ON (c:drugs)
+ASSERT c.id IS UNIQUE
+
+LOAD CSV WITH HEADERS FROM "file:///xin_Health.csv" AS line
+CREATE (n:health {id:line.id,title:line.title,url:line.url,img:line.img, Diagnosis:line.Diagnosis,  About:line.About,   SignsAndSymptoms:line.SignsAndSymptoms,    SeeAlso:line.SeeAlso,Details:line.Detail})
+
+CREATE CONSTRAINT ON (c:health)
+ASSERT c.id IS UNIQUE
+
+LOAD CSV WITH HEADERS FROM "file:///xin_wikiitem.csv" AS line
+CREATE (w:wiki { id:line.id,title:line.title })
+
+CREATE CONSTRAINT ON (w:wiki)
+ASSERT w.id IS UNIQUE
+
+LOAD CSV WITH HEADERS FROM "file:///Drugs_attributes.csv" AS line
+MATCH (entity1:drugs{id:line.id}) , (entity2{title:line.value})
+CREATE (entity1)-[:attr { type: line.attribute }]->(entity2)
+
+LOAD CSV WITH HEADERS FROM "file:///Health_attributes.csv" AS line
+MATCH (entity1:health {id:line.id}) , (entity2{title:line.value})
+CREATE (entity1)-[:attr { type: line.attribute }]->(entity2)
+
+LOAD CSV WITH HEADERS FROM "file:///xin_wikip.csv" AS line
+CREATE (p:rel { id:li
+
+ne.pid,title:line.titles })
+
+LOAD CSV  WITH HEADERS FROM "file:///triples_final_result.csv" AS line
+MATCH (entity1 {id:line.id1}) , (entity2 {id:line.id2})
+CREATE (entity1)-[:relation {type:line.pid}]->(entity2)
+
+MATCH (entity1:drugs {id:line.id1}) , (entity2:wiki{id:line.id2})
+CREATE (entity1)-[:relation {type:line.pid}]->(entity2)
+
+
+
+LOAD CSV  WITH HEADERS FROM "file:///triples_final_result.csv" AS line
+MATCH (entity1 {id:line.id1})-[r:relation]->(entity2 {id:line.id2})
+delete r
+
+
+
+
+
+
+
+
+
+
+
+
+LOAD CSV WITH HEADERS FROM "file:///Drugs_attributes.csv" AS line
+MATCH (entity1:drugs{title:line.Entity}), (entity2:HudongItem{title:line.Attribute})
+CREATE (entity1)-[:RELATION { type: line.AttributeName }]->(entity2);
+                                                            
+LOAD CSV WITH HEADERS FROM "file:///attributes.csv" AS line
+MATCH (entity1:drugs{title:line.Entity}), (entity2:NewNode{title:line.Attribute})
+CREATE (entity1)-[:RELATION { type: line.AttributeName }]->(entity2);
+                                                            
+LOAD CSV WITH HEADERS FROM "file:///attributes.csv" AS line
+MATCH (entity1:NewNode{title:line.Entity}), (entity2:NewNode{title:line.Attribute})
+CREATE (entity1)-[:RELATION { type: line.AttributeName }]->(entity2);
+                                                            
+LOAD CSV WITH HEADERS FROM "file:///attributes.csv" AS line
+MATCH (entity1:NewNode{title:line.Entity}), (entity2:HudongItem{title:line.Attribute})
+CREATE (entity1)-[:RELATION { type: line.AttributeName }]->(entity2) 

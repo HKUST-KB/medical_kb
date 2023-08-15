@@ -1,0 +1,11 @@
+entity1,entity2,relation
+菊糖,化合物,instance of
+菊糖,藥物治療,instance of
+菊糖,多糖,instance of
+草药,俗名,instance of
+菊糖,膳食纖維,instance of
+草药,香草植物,subclass of
+菊糖,食物,subclass of
+茄子,生物分類單元,instance of
+草药,传统医学,use
+菊糖,亚美尼亚苏维埃百科全书,described by source
